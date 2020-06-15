@@ -1,0 +1,36 @@
+{
+  "name": "svelte-route",
+  "version": "0.0.1",
+  "description": "A simple svelte route.",
+  "svelte": "src/index.js",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imsamtar/svelte-route.git"
+  },
+  "keywords": [
+    "svelte",
+    "router"
+  ],
+  "author": "SAMEER TARIQ <imsamtar@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imsamtar/svelte-route/issues"
+  },
+  "homepage": "https://github.com/imsamtar/svelte-route#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^6.0.0",
+    "rollup": "^1.20.0",
+    "rollup-plugin-svelte": "^5.0.0",
+    "svelte": "^3.0.0"
+  },
+  "files": [
+    "src",
+    "dist"
+  ]
+}
