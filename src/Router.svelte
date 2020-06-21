@@ -1,3 +1,9 @@
+<script context="module">
+  import handleAnchor from "./helpers/handleAnchor";
+
+  handleAnchor();
+</script>
+
 <script>
   import CustomStore from "./stores/types/CustomStore";
   import { setContext, getContext } from "svelte";

@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import routes from "../stores/routes";
+import goto from "./goto";
 
 export const updateCount = writable(0);
 
@@ -12,15 +13,13 @@ function findAnchor(node) {
 }
 
 export default function () {
-    window.onclick = function (event) {
+    window.addEventListener("click", function (event) {
         const anchor = findAnchor(event.target);
         if (anchor && anchor.origin === location.origin) {
             const href = anchor.getAttribute("href");
             if (/^(\w+:)?\/\//.test(href)) return;
             event.preventDefault();
-            if (anchor.getAttribute('replace') !== null)
-                history.replaceState("", document.title, href);
-            else history.pushState("", document.title, href);
+            goto(href, anchor.getAttribute('replace') !== null);
             updateCount.update(count => ++count);
             routes.get().forEach(router => {
                 router.update(router => {
@@ -29,5 +28,5 @@ export default function () {
                 });
             });
         }
-    }
+    });
 }
