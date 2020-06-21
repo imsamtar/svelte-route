@@ -1,5 +1,6 @@
-export { default as Router } from "./components/Router.svelte";
-export { default as Route } from "./components/Route.svelte";
-export { default as NotFound } from "./components/NotFound.svelte";
+export { default as page } from "page";
 
-export { default as routers } from "./stores/routers";
+export { default as Pages } from "./components/Pages.svelte";
+export { default as Page } from "./components/Page.svelte";
+
+export { goto } from "./helpers/index";

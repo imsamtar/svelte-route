@@ -4,6 +4,8 @@
   import routers from "../stores/routers";
   import pagejs from "page";
 
+  export let notfound = undefined;
+
   const router = writable({ routes: [], active: null });
 
   setContext("$router", router);
@@ -18,3 +20,13 @@
 </script>
 
 <slot />
+{#if !$router.active}
+  {#if notfound}
+    <svelte:component this={notfound} />
+  {:else}
+    <slot name="not-found">
+      <h1>Error: 404</h1>
+      <p>Page not found...</p>
+    </slot>
+  {/if}
+{/if}
