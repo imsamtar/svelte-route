@@ -18,7 +18,9 @@ export default function () {
             const href = anchor.getAttribute("href");
             if (/^(\w+:)?\/\//.test(href)) return;
             event.preventDefault();
-            history.pushState("", document.title, href);
+            if (anchor.getAttribute('replace') !== null)
+                history.replaceState("", document.title, href);
+            else history.pushState("", document.title, href);
             updateCount.update(count => ++count);
             routes.get().forEach(router => {
                 router.update(router => {
