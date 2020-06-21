@@ -1,5 +1,3 @@
-import CustomStore from "./types/CustomStore";
+import { writable } from "svelte/store";
 
-const routers = new CustomStore(new Set());
-
-export default routers;
+export default writable([]);
