@@ -1,5 +1,5 @@
 <script>
-  import { onMount, getContext } from "svelte";
+  import { onMount, onDestroy, getContext } from "svelte";
   import newPath from "./helpers/newPath";
   import matchPath from "./helpers/matchPath";
   import routes from "./stores/routes";
@@ -13,9 +13,16 @@
   let completePath = newPath($router.completePath, path);
   let route = { uid, completePath, component };
   let firstTime = true;
-
-  $router.routes.push(route);
   let matched;
+
+  onMount(function() {
+    $router.routes = [...$router.routes, route];
+  });
+
+  onDestroy(function() {
+    $router.routes = $router.routes.filter(rout => rout !== route);
+    if (($router.activeRoute === uid)) $router.activeRoute = null;
+  });
 
   function routeChange() {
     if (!$router.activeRoute) {
