@@ -32,6 +32,14 @@ A simple routing library for svelte.
                 - every middleware must call next() in order to enter the page.
         - guard: truthy/falsey | function | array[function] | array[truthy/falsey]
         - guards: array[function] | array[truthy/falsey]
+        - scrollReset:
+            - options
+                - "auto" [default]
+                    - Reset scroll position only if actual change in route.
+                - true | truthy
+                    - Always reset scroll position.
+                - false | "false" | falsey
+                    - Don't reset scroll position at all.
 
     - slots
         - default
