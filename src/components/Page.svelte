@@ -10,18 +10,23 @@
   export let middlewares =
     typeof middleware === "function" ? [middleware] : middleware;
   export let scrollReset = "auto";
+  export let alt = undefined;
+  let slots = $$props.$$slots || {};
 
   const router = getContext("$router");
   const page = {};
   let context;
+  let pass_guards;
 
   onMount(function() {
     $router.routes = [...$router.routes, page];
     pagejs(route, ...middlewares, function(ctx, next) {
-      const pass = guards.reduce(function(pass, guard) {
-        return pass && (typeof guard === "function" ? guard(ctx) : guard);
+      pass_guards = guards.reduce(function(pass_guards, guard) {
+        return (
+          pass_guards && (typeof guard === "function" ? guard(ctx) : guard)
+        );
       }, true);
-      if (pass) {
+      if (pass_guards) {
         const old_route = $router.active;
         $router.active = page;
         context = ctx;
@@ -29,9 +34,9 @@
           if (scrollReset === "auto") old_route !== page && scrollTo(0, 0);
           else scrollTo(0, 0);
         }
-      } else {
-        $router.active = null;
-      }
+      } else if (alt || slots.alt) {
+        $router.active = page;
+      } else $router.active = null;
     });
   });
   onDestroy(function() {
@@ -40,9 +45,15 @@
 </script>
 
 {#if $router.active === page}
-  {#if src}
-    <svelte:component this={src} {...context.params} />
-  {:else}
-    <slot {context} params={context.params} />
+  {#if pass_guards}
+    {#if src}
+      <svelte:component this={src} {...context.params} />
+    {:else}
+      <slot {context} params={context.params} />
+    {/if}
+  {:else if alt}
+    <svelte:component this={alt} {...context} />
+  {:else if slots.alt}
+    <slot name="alt" />
   {/if}
 {/if}
