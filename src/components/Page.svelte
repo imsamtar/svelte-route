@@ -9,6 +9,7 @@
   export let middleware = [];
   export let middlewares =
     typeof middleware === "function" ? [middleware] : middleware;
+  export let scrollReset = "auto";
 
   const router = getContext("$router");
   const page = {};
@@ -21,8 +22,13 @@
         return pass && (typeof guard === "function" ? guard(ctx) : guard);
       }, true);
       if (pass) {
+        const old_route = $router.active;
         $router.active = page;
         context = ctx;
+        if (scrollReset && scrollReset !== "false") {
+          if (scrollReset === "auto") old_route !== page && scrollTo(0, 0);
+          else scrollTo(0, 0);
+        }
       } else {
         $router.active = null;
       }
