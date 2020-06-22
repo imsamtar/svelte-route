@@ -18,7 +18,7 @@ A simple routing library for svelte.
 - Page
     - props
         - route: string [default: '/']
-        - src: Component [optional]
+        - src: component [optional]
         - middleware:
             - types
                 - function(context, next)
@@ -40,10 +40,14 @@ A simple routing library for svelte.
                     - Always reset scroll position.
                 - false | "false" | falsey
                     - Don't reset scroll position at all.
+        - alt: component [optional]
+            - if failed to pass guards.
 
     - slots
         - default
             - shown only if not src prop is passed.
+        - alt
+            - if failed to pass guards and alt prop not passed.
 
 - goto
     - description
