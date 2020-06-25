@@ -21,15 +21,10 @@
   onMount(function() {
     $router.routes = [...$router.routes, page];
     pagejs(route, ...middlewares, function(ctx, next) {
-      pass_guards = guards.reduce(function(pass_guards, guard) {
-        return (
-          pass_guards && (typeof guard === "function" ? guard(ctx) : guard)
-        );
-      }, true);
+      context = ctx;
       if (pass_guards) {
         const old_route = $router.active;
         $router.active = page;
-        context = ctx;
         if (scrollReset && scrollReset !== "false") {
           if (scrollReset === "auto") old_route !== page && scrollTo(0, 0);
           else scrollTo(0, 0);
@@ -42,6 +37,13 @@
   onDestroy(function() {
     $router.routes = $router.routes.filter(_page => _page !== page);
   });
+
+  $: guards = guard instanceof Array ? guard : [guard];
+
+  $: pass_guards = guards.reduce(
+    (pass, guard) => pass && (typeof guard === "function" ? guard() : !!guard),
+    true
+  );
 </script>
 
 {#if $router.active === page}
@@ -52,7 +54,7 @@
       <slot {context} params={context.params} />
     {/if}
   {:else if alt}
-    <svelte:component this={alt} {...context} />
+    <svelte:component this={alt} {context} />
   {:else if slots.alt}
     <slot name="alt" />
   {/if}
